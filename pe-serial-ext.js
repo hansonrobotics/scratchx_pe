@@ -105,6 +105,9 @@
 	ext.omt = function(cb) { this.sayThis("<MO=MO,1,0.5>", cb) };
 	ext.elo = function(cb) { this.sayThis("<MO=EL,0,0.5>",cb) };
 	ext.elc = function(cb) { this.sayThis("<MO=EL,1,0.5>",cb) };
+	ext.htr = function(cb) { this.sayThis("<MO=HT,1,0.5>",cb) };
+	ext.hrm = function(cb) { this.sayThis("<MO=HT,0.5,0.5>",cb) };
+	ext.htl = function(cb) { this.sayThis("<MO=HT,0,0.5>",cb) };
 	ext.ed = function(cb) { this.sayThis("<MO=EB,0,0.5>",cb) };
 	ext.eu = function(cb) { this.sayThis("<MO=EB,1,0.5>",cb) };
 	ext.cu = function(cb) { this.sayThis("<MO=CH,0,0.5>",cb) };
@@ -122,6 +125,9 @@
 			['w', 'Head down', 'hd'],
 			['w', 'Head middle', 'hm'],
 			['w', 'Head up', 'hu'],
+			['w', 'Head turn left', 'htl'],
+			['w', 'Head turn middle', 'htm'],
+			['w', 'Head turn right', 'htr'],
 			['w', 'Close mouth', 'cm'],
 			['w', 'Open mouth', 'om'],
 			['w', 'Open mouth tongue', 'omt'],
