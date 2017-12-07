@@ -106,8 +106,8 @@
   	};
 	ext.disconnect = function(){
 		if (device){
-			device = null
 			device.close();
+			device = null;
 		}
 	};
 	ext.moveMotor = function(motor, position, duration, cb) {
