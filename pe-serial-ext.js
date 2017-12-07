@@ -18,6 +18,15 @@
 	var potentialDevices = [];
 	var poller = null;
     var watchdog = null;
+	var motors = {
+		'Right Arm': 'AR',
+		'Head Nod': 'HN',
+		'Head Turn': 'HT',
+		'Mouth Open': 'MO',
+		'Eyelid': 'EL',
+		'Eyebrow': 'EB',
+		'Chin': 'CH'
+	};
 
 	ext._deviceConnected = function(dev) {
 		potentialDevices.push(dev);
@@ -81,12 +90,13 @@
     ext._getStatus = function() {
         if(!device) return {status: 0, msg: 'Can not connect to serial port'};
         if(watchdog) return {status: 1, msg: 'Waiting for board to be connected'};
-        return {status: 2, msg: 'PicoBoard connected'};
+        return {status: 2, msg: 'Einstein Board connected'};
     }
-  	ext.sayThis = function(txt, cb) {
+  	ext.sayThis = function(txt, cb, timeout) {
+		timeout = timeout || 510;
 		device.send(stringToArrayBuffer("=send_command(\"" + txt + "\")\r\n"));
 		// small callback needed to prevent sending different commands at same time
-		window.setTimeout(function(){cb();}, 510);
+		window.setTimeout(function(){cb();}, timeout);
   	};
 	ext.walk = function() {
 		device.send(stringToArrayBuffer("=send_command(\"Dont myndifydoo.<MO=EL,1.0,0.5><MO=HN,0,0.5><PM><MO=EL,0.1,0.5><MO=HN,0.3,0.5><PA><WK=W2><PA>\")\r\n"));
@@ -94,6 +104,17 @@
 	ext.wifiSetup = function(ssid, pwd) {
 		device.send(stringToArrayBuffer("=init_wifi(\"" + ssid + "\",\""+pwd+"\")\r\n"));
   	};
+	ext.disconnect = function(){
+		if (device){
+			device = null
+			device.close();
+		}
+	};
+	ext.moveMotor = function(motor, position, duration, cb) {
+		var cmd = "<MO="+motors[motor]+","+position+",",+duration+">";
+		this.sayThis(cmd, cb, Math.min(100, duration*1000+10));
+  	};
+	
 	// Motor functions
 	ext.rad = function(cb) { this.sayThis("<MO=AR,0,0.5>",cb) };
 	ext.rap = function(cb) { this.sayThis("<MO=AR,1,0.5>",cb) };
@@ -115,11 +136,11 @@
 	ext.cd = function(cb) { this.sayThis("<MO=CH,1,0.5>",cb) };
 
 
-
 	var descriptor = {
     	blocks: [
 			['w', 'Einstein SSID  %s passwrod %s' , 'wifiSetup', 'EINSTEIN0000', 'genius0000'],
 			['w', 'Say %s', 'sayThis', 'hello'],
+			['w', 'Move motor %m.motors to position %m.position in %m.seconds sec.', 'moveMotor'],
 			['w', 'Right arm down', 'rad'],
 			['w', 'Right arm pointing', 'rap'],
 			['w', 'Head down', 'hd'],
@@ -137,8 +158,14 @@
 			['w', 'Eyebrow up', 'eu'],
 			['w', 'Chin up (Smile)', 'cu'],
 			['w', 'Chin Neutral', 'cn'],
-			['w', 'Chin down (Frown)', 'cd']
+			['w', 'Chin down (Frown)', 'cd'],
+			[' ', 'Disconnect', 'disconnect']
     	],
+		menus: {
+            motors: ['Right Arm', 'Head Nod', 'Head Turn', 'Mouth Open', 'Eyelid', 'Eyelid', 'Eyebrow', 'Chin'],
+            position: ['0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1'],
+            secconds: ['0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1']
+        },
     
 	};
 
