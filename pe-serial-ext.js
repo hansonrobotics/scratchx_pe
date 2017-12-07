@@ -79,42 +79,59 @@
 	  	ext._shutdown = function() {};
   	
     ext._getStatus = function() {
-        if(!device) return {status: 1, msg: 'Board disconnected'};
+        if(!device) return {status: 0, msg: 'Can not connect to serial port'};
         if(watchdog) return {status: 1, msg: 'Waiting for board to be connected'};
         return {status: 2, msg: 'PicoBoard connected'};
     }
-  	ext.sayThis = function(txt) {
+  	ext.sayThis = function(txt, cb) {
 		device.send(stringToArrayBuffer("=send_command(\"" + txt + "\")\r\n"));
+		// small callback needed to prevent sending different commands at same time
+		window.setTimeout(function(){cb();}, 510);
   	};
 	ext.walk = function() {
 		device.send(stringToArrayBuffer("=send_command(\"Dont myndifydoo.<MO=EL,1.0,0.5><MO=HN,0,0.5><PM><MO=EL,0.1,0.5><MO=HN,0.3,0.5><PA><WK=W2><PA>\")\r\n"));
 	}; 	
-	ext.crazy = function() {
-		device.send(stringToArrayBuffer("crazy = \"You asked for it.<PA=2><MO=EL,1,0.5><PA=1.5><MO=HT,0,0.1><PA=0.8><MO=HT,1,0.2><PA=0.5><MO=HT,0.5,0.2> \"\r\n"));
-		device.send(stringToArrayBuffer("crazy = crazy .. \"<PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,1,0.1><MO=EB,0,0.1><PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,1,0.1><MO=EB,0,0.1> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<PM><MO=AR,1,0.5><PM><MO=AR,0,0.5><PM><MO=HN,1,0.2><PM><MO=HN,0,0.2><PM><MO=HN,1,0.2><PM><MO=HN,0,0.2><PM><MO=HN,1,0.2> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<MO=AR,1,0.5><PM><MO=AR,0,0.5><PM><MO=HT,0.7,0.2><PM><MO=HT,0.3,0.2><PM><MO=HT,0.7,0.2><PM><MO=HT,0.3,0.2><PM><MO=HT,0.7,0.2> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<PM><MO=HT,0.5,0.2><MO=AR,1,0.5><PM><MO=AR,0,0.5><PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,1,0.1><MO=EB,0,0.1><PM> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,1,0.1><MO=EB,0,0.1><PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><PM><MO=CH,1,0.1><MO=EB,0,0.1> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,1,0.1><MO=EB,0,0.1><PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,1,0.1><MO=EB,0,0.1> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,0,0.1><MO=EB,1,0.1><PM><MO=CH,1,0.1><MO=EB,0,0.1><PM><MO=CH,0,0.1><MO=EB,1,0.1> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<PM><MO=CH,1,0.1><MO=EB,0,0.1><PM><MO=HT,0,0.1><PA=0.4><MO=HN,1,0.2><MO=HT,1,0.2><PA=0.7><MO=HT,0.5,0.1><MO=CH,0,0.1> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<MO=EB,1,0.1><PM><MO=AR,1,0.1><MO=MO,1.0,0.3><PA=0.5><MO=AR,0,2><MO=CH,0.5,2><MO=MO,0,2><MO=EB,0,2><MO=HN,0.3,2><PA=1> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<MO=EL,0.1,0.5><PA=1.5> That's gonna hurt in the morning.<MO=EL,1.0,0.5><MO=HT,0.7,0.5><PM><MO=HT,0.3,0.5><PM> \"\r\n"));
-		//device.send(stringToArrayBuffer("crazy = crazy .. \"<MO=HT,0.5,0.5><MO=EL,0.1,0.5><PA>\"\r\n"));
-		device.send(stringToArrayBuffer("=send_command(crazy)\r\n"));
-	};
 	ext.wifiSetup = function(ssid, pwd) {
 		device.send(stringToArrayBuffer("=init_wifi(\"" + ssid + "\",\""+pwd+"\")\r\n"));
   	};
+	// Motor functions
+	ext.rad = function(cb) { this.sayThis("<MO=AR,0,0.5>",cb) };
+	ext.rap = function(cb) { this.sayThis("<MO=AR,1,0.5>",cb) };
+	ext.hd = function(cb) { this.sayThis("<MO=HN,0,0.5>",cb) };
+	ext.hm = function(cb) { this.sayThis("<MO=HN,0.5,0.5>",cb) };
+	ext.hu = function(cb) { this.sayThis("<MO=HN,1,0.5>",cb) };
+	ext.cm = function(cb) { this.sayThis("<MO=MO,0,0.5>",cb) };
+	ext.om = function(cb) { this.sayThis("<MO=MO,0.5,0.5>",cb) };
+	ext.omt = function(cb) { this.sayThis("<MO=MO,1,0.5>", cb) };
+	ext.elo = function(cb) { this.sayThis("<MO=EL,0,0.5>",cb) };
+	ext.elc = function(cb) { this.sayThis("<MO=EL,1,0.5>",cb) };
+	ext.ed = function(cb) { this.sayThis("<MO=EB,0,0.5>",cb) };
+	ext.eu = function(cb) { this.sayThis("<MO=EB,1,0.5>",cb) };
+	ext.cu = function(cb) { this.sayThis("<MO=CH,0,0.5>",cb) };
+	ext.cn = function(cb) { this.sayThis("<MO=CH,0.5,0.5>",cb) };
+	ext.cd = function(cb) { this.sayThis("<MO=CH,1,0.5>",cb) };
+
+
 
 	var descriptor = {
     	blocks: [
-			[' ', 'Say %s', 'sayThis', 'txt', 'hello'],
-			[' ', 'Walk', 'walk'],
-			[' ', 'Go Crazy', 'crazy'],
-			[' ', 'connect','connect'],
-			[' ', 'Einstein SSID  %s passwrod %s' , 'wifiSetup', 'ssid', 'EINSTEIN0000','pwd', 'genius0000']
+			['w', 'Einstein SSID  %s passwrod %s' , 'wifiSetup', 'EINSTEIN0000', 'genius0000'],
+			['w', 'Say %s', 'sayThis', 'hello'],
+			['w', 'Right arm down', 'rad'],
+			['w', 'Right arm pointing', 'rap'],
+			['w', 'Head down', 'hd'],
+			['w', 'Head middle', 'hm'],
+			['w', 'Head up', 'hu'],
+			['w', 'Close mouth', 'cm'],
+			['w', 'Open mouth', 'om'],
+			['w', 'Open mouth tongue', 'omt'],
+			['w', 'Eye lid open', 'elo'],
+			['w', 'Eye lid close', 'elc'],
+			['w', 'Eyebrow downn', 'ed'],
+			['w', 'Eyebrow up', 'eu'],
+			['w', 'Chin up (Smile)', 'cu'],
+			['w', 'Chin Neutral', 'cn'],
+			['w', 'Chin down (Frown)', 'cd']
     	],
     
 	};
