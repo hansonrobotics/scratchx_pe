@@ -111,7 +111,7 @@
 		}
 	};
 	ext.moveMotor = function(motor, position, duration, cb) {
-		var cmd = "<MO="+motors[motor]+","+position+",",+duration+">";
+		var cmd = "<MO="+motors[motor]+","+position+","+duration+">";
 		this.sayThis(cmd, cb, Math.min(100, duration*1000+10));
   	};
 	
