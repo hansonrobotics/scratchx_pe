@@ -18,6 +18,7 @@
 	var potentialDevices = [];
 	var poller = null;
     var watchdog = null;
+	var disconnected = false;
 	var motors = {
 		'Right Arm': 'AR',
 		'Head Nod': 'HN',
@@ -107,7 +108,13 @@
 	ext.disconnect = function(){
 		if (device){
 			device.close();
-			device = null;
+			disconnected = true
+		}
+	};
+	ext.reconnect = function(){
+		if (device && disconnected){
+			disconnected == false
+			device == null
 		}
 	};
 	ext.moveMotor = function(motor, position, duration, cb) {
@@ -159,7 +166,8 @@
 			['w', 'Chin up (Smile)', 'cu'],
 			['w', 'Chin Neutral', 'cn'],
 			['w', 'Chin down (Frown)', 'cd'],
-			[' ', 'Disconnect', 'disconnect']
+			[' ', 'Disconnect', 'disconnect'],
+			[' ', 'Reconnect', 'reconnect']
     	],
 		menus: {
             motors: ['Right Arm', 'Head Nod', 'Head Turn', 'Mouth Open', 'Eyelid', 'Eyelid', 'Eyebrow', 'Chin'],
