@@ -140,7 +140,7 @@
     	blocks: [
 			['w', 'Einstein SSID  %s passwrod %s' , 'wifiSetup', 'EINSTEIN0000', 'genius0000'],
 			['w', 'Say %s', 'sayThis', 'hello'],
-			['w', 'Move motor %m.motors to position %m.position in %m.seconds sec.', 'moveMotor'],
+			['w', 'Move motor %m.motors to position %m.position in %m.seconds sec.', 'moveMotor', 'Right Arm', '0.5','0.5'],
 			['w', 'Right arm down', 'rad'],
 			['w', 'Right arm pointing', 'rap'],
 			['w', 'Head down', 'hd'],
@@ -164,7 +164,7 @@
 		menus: {
             motors: ['Right Arm', 'Head Nod', 'Head Turn', 'Mouth Open', 'Eyelid', 'Eyelid', 'Eyebrow', 'Chin'],
             position: ['0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1'],
-            secconds: ['0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1']
+            seconds: ['0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9','1']
         },
     
 	};
