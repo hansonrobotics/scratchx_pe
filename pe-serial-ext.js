@@ -90,7 +90,7 @@
   	
     ext._getStatus = function() {
         if(!device) return {status: 0, msg: 'Can not connect to serial port'};
-        if(watchdog) return {status: 1, msg: 'Waiting for board to be connected'};
+        if(disconnected) return {status: 1, msg: 'Reconnect to continue'};
         return {status: 2, msg: 'Einstein Board connected'};
     }
   	ext.sayThis = function(txt, cb, timeout) {
