@@ -107,14 +107,15 @@
   	};
 	ext.disconnect = function(){
 		if (device){
+			console.log('disconnected');
 			device.close();
 			disconnected = true
 		}
 	};
 	ext.reconnect = function(){
 		if (device && disconnected){
-			disconnected == false
-			device == null
+			disconnected = false
+			device = null
 		}
 	};
 	ext.moveMotor = function(motor, position, duration, cb) {
