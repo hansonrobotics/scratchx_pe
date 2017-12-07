@@ -146,7 +146,9 @@
 
 	var descriptor = {
     	blocks: [
-			['w', 'Einstein SSID  %s passwrod %s' , 'wifiSetup', 'EINSTEIN0000', 'genius0000'],
+			['w', 'Einstein SSID  %s pwd %s' , 'wifiSetup', 'EINSTEIN0000', 'genius0000'],
+			[' ', 'Disconnect', 'disconnect'],
+			[' ', 'Reconnect', 'reconnect'],		
 			['w', 'Say %s', 'sayThis', 'hello'],
 			['w', 'Move motor %m.motors to position %m.position in %m.seconds sec.', 'moveMotor', 'Right Arm', '0.5','0.5'],
 			['w', 'Right arm down', 'rad'],
@@ -166,9 +168,7 @@
 			['w', 'Eyebrow up', 'eu'],
 			['w', 'Chin up (Smile)', 'cu'],
 			['w', 'Chin Neutral', 'cn'],
-			['w', 'Chin down (Frown)', 'cd'],
-			[' ', 'Disconnect', 'disconnect'],
-			[' ', 'Reconnect', 'reconnect']
+			['w', 'Chin down (Frown)', 'cd']
     	],
 		menus: {
             motors: ['Right Arm', 'Head Nod', 'Head Turn', 'Mouth Open', 'Eyelid', 'Eyelid', 'Eyebrow', 'Chin'],
