@@ -92,8 +92,7 @@
 		if(device) device.close();
 		device = null;
 	}	
-	  	ext._shutdown = function() {};
-  	
+
     ext._getStatus = function() {
         if(!device) return {status: 0, msg: 'Can not connect to serial port'};
         if(disconnected) return {status: 1, msg: 'Reconnect to continue'};
