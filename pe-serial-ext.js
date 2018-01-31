@@ -73,7 +73,12 @@
 			console.log(arrayBufferToString(data));
         });
         console.log('Connected');
-		console.log(device);
+		$( window ).unload(function() {
+			if (device){
+				device.close();
+			}
+			console.log("disconnected")
+		});
 	};
 	ext._deviceRemoved = function(dev) {
 		if(device != dev) return;
