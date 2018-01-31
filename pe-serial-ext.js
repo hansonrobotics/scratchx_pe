@@ -87,6 +87,7 @@
 	};
 	
 	ext._shutdown = function() {
+		console.log("Shutdown")
 		if(poller) poller = clearInterval(poller);
 		if(device) device.close();
 		device = null;
